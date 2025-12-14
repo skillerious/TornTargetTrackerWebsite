@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torn Target Tracker | Release Notes</title>
+    <meta name="description" content="Full release notes for Torn Target Tracker desktop app.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-shell release-page">
+    <div class="bg-grid"></div>
+    <div class="bg-gradient"></div>
+
+    <header class="page-nav">
+        <div class="nav-inner">
+            <a class="brand" href="index.html">
+                <span class="brand-dot"></span>
+                <span>Torn Target Tracker</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#whats-new">Highlights</a></li>
+                <li><a href="guide.html">Guide</a></li>
+                <li><a href="https://github.com/skillerious/TornTargetTrackerV2/releases" target="_blank" rel="noopener">All releases</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a class="btn btn-ghost" href="index.html#download">Back to download</a>
+                <a class="btn btn-primary" href="https://github.com/skillerious/TornTargetTrackerV2/releases/download/v2.7.9/TornTargetTrackerSetup-2.7.9.exe">Download v2.7.9</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <div class="content-width">
+                <p class="eyebrow">Release notes</p>
+                <h1>Updates that keep operators moving</h1>
+                <p>Each release focuses on safer API usage, clearer feedback, and faster targeting. Use this page when you want the full story without crowding the landing page.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="https://github.com/skillerious/TornTargetTrackerV2/releases/download/v2.7.9/TornTargetTrackerSetup-2.7.9.exe">Grab the latest build</a>
+                    <a class="btn btn-ghost" href="https://github.com/skillerious/TornTargetTrackerV2/releases" target="_blank" rel="noopener">Open on GitHub</a>
+                </div>
+                <div class="pill-row">
+                    <span class="pill">v2.7.9 current</span>
+                    <span class="pill">Windows installer</span>
+                    <span class="pill">Open source</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="content-width">
+                <div class="section-header">
+                    <span class="section-tag">Timeline</span>
+                    <h2 class="section-title">Recent releases</h2>
+                    <p class="section-subtitle">Highlights from the latest builds. Older releases remain available on GitHub with hashes for verification.</p>
+                </div>
+                <div class="timeline">
+                    <article class="timeline-item">
+                        <div class="pill">v2.7.9</div>
+                        <h3>Stability and guidance</h3>
+                        <p class="timeline-meta">December 2025</p>
+                        <ul class="list-plain">
+                            <li>Manual bounty tracking adds targets with bounty amounts for better bookkeeping.</li>
+                            <li>Attack Tracker keeps an up-to-date view of who you already hit during a chain.</li>
+                            <li>Help Center refreshed with clearer shortcuts, rate limit tips, and setup notes.</li>
+                            <li>Rate limit popover now shows precise remaining calls and reset timers.</li>
+                        </ul>
+                    </article>
+                    <article class="timeline-item">
+                        <div class="pill">v2.7.8</div>
+                        <h3>Backup confidence</h3>
+                        <p class="timeline-meta">October 2025</p>
+                        <ul class="list-plain">
+                            <li>Backup and restore flow rebuilt to include target groups, history, and preferences.</li>
+                            <li>Installer hardened to verify file integrity before first launch.</li>
+                            <li>Improved status bar signals when the API key needs attention.</li>
+                        </ul>
+                    </article>
+                    <article class="timeline-item">
+                        <div class="pill">v2.7.7</div>
+                        <h3>Rate limit discipline</h3>
+                        <p class="timeline-meta">August 2025</p>
+                        <ul class="list-plain">
+                            <li>Exponential backoff tuned for Torn API 429 responses.</li>
+                            <li>Refresh intervals now adapt automatically when the app detects heavy traffic.</li>
+                            <li>UI polish: tighter spacing, clearer labels, and faster screenshot loading.</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="content-width">
+                <div class="section-header">
+                    <span class="section-tag">Next up</span>
+                    <h2 class="section-title">Planned improvements</h2>
+                    <p class="section-subtitle">A short, focused list so contributors can pick up work without guessing.</p>
+                </div>
+                <div class="card-grid">
+                    <article class="card">
+                        <h3>Shortcut overlay</h3>
+                        <p>Show an in-app overlay of every keyboard shortcut to speed up new operators.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Chain health view</h3>
+                        <p>Aggregate target timers, hospitalization windows, and bounty opportunities in one glance.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Deeper logging</h3>
+                        <p>Optional verbose logs for bug reports without exposing private API data.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-simple">
+        <div class="content-width">
+            <span>Thanks for testing and reporting issues. Precise feedback keeps the app lean.</span>
+            <div class="footer-links">
+                <a href="index.html">Back to landing</a>
+                <a href="guide.html">Operator guide</a>
+                <a href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank" rel="noopener">Report an issue</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

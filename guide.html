@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torn Target Tracker | Operator Guide</title>
+    <meta name="description" content="Quickstart and operational guide for Torn Target Tracker.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="page-shell guide-page">
+    <div class="bg-grid"></div>
+    <div class="bg-gradient"></div>
+
+    <header class="page-nav">
+        <div class="nav-inner">
+            <a class="brand" href="index.html">
+                <span class="brand-dot"></span>
+                <span>Torn Target Tracker</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="index.html#features">Overview</a></li>
+                <li><a href="release-notes.html">Release Notes</a></li>
+                <li><a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank" rel="noopener">GitHub</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a class="btn btn-ghost" href="index.html#download">Back to download</a>
+                <a class="btn btn-primary" href="https://github.com/skillerious/TornTargetTrackerV2/releases/download/v2.7.9/TornTargetTrackerSetup-2.7.9.exe">Download v2.7.9</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <div class="content-width">
+                <p class="eyebrow">Operator guide</p>
+                <h1>Precision setup in minutes</h1>
+                <p>Use this guide to get the desktop app ready for chains, keep targets organized, and avoid rate limit surprises. Everything stays focused so you can move fast.</p>
+                <div class="hero-actions">
+                    <a class="btn btn-primary" href="https://github.com/skillerious/TornTargetTrackerV2/releases/download/v2.7.9/TornTargetTrackerSetup-2.7.9.exe">Download for Windows</a>
+                    <a class="btn btn-ghost" href="release-notes.html">See what changed in 2.7.9</a>
+                </div>
+                <div class="pill-row">
+                    <span class="pill">AES-256 encrypted API key</span>
+                    <span class="pill">Rate-limit aware polling</span>
+                    <span class="pill">Keyboard-first layout</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="content-width">
+                <div class="section-header">
+                    <span class="section-tag">Setup</span>
+                    <h2 class="section-title">Quickstart checklist</h2>
+                    <p class="section-subtitle">Follow these steps once and you are ready for every chain. Each step matches the app layout so you do not have to hunt for settings.</p>
+                </div>
+                <div class="card-grid">
+                    <article class="card">
+                        <div class="kicker">Step 1</div>
+                        <h3>Install and connect</h3>
+                        <p>Run the v2.7.9 installer, open the app, and drop in your Torn API key.</p>
+                        <ul class="list-plain">
+                            <li>Use a key with minimal scopes: user, faction, and attacks.</li>
+                            <li>The key is encrypted with AES-256-GCM before storage.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <div class="kicker">Step 2</div>
+                        <h3>Build your target set</h3>
+                        <p>Import a CSV or paste target IDs, then group them for quick filtering.</p>
+                        <ul class="list-plain">
+                            <li>Color code groups for chains, traveling, or bounty runs.</li>
+                            <li>Use quick filters for attackable, hospital, travel, or jail.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <div class="kicker">Step 3</div>
+                        <h3>Calibrate refresh</h3>
+                        <p>Set your polling rate to balance freshness with API limits.</p>
+                        <ul class="list-plain">
+                            <li>Use 15s during chains; 45s or higher for idle tracking.</li>
+                            <li>Rate limit popover shows remaining calls before a burst.</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="content-width">
+                <div class="section-header">
+                    <span class="section-tag">Workflows</span>
+                    <h2 class="section-title">Operate with a repeatable rhythm</h2>
+                    <p class="section-subtitle">Use these patterns during a chain or while prepping targets. They pair with keyboard shortcuts and the VS Code inspired sidebar.</p>
+                </div>
+                <div class="card-grid">
+                    <article class="card">
+                        <h3>Chain readiness</h3>
+                        <p>Stay on top of targets that are attackable right now.</p>
+                        <ul class="list-plain">
+                            <li>Filter to attackable, then sort by level or travel timer.</li>
+                            <li>Pin the attackable list so it never scrolls off screen.</li>
+                            <li>Open the target profile in one click when you are ready to swing.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Attack review</h3>
+                        <p>Keep a clean log so you never double-tap the same target mid-chain.</p>
+                        <ul class="list-plain">
+                            <li>Enable Attack Tracker to mark every completed hit.</li>
+                            <li>Use manual bounty tracking to log payouts as you go.</li>
+                            <li>Sort attack history by recency to spot repeats.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Backup and restore</h3>
+                        <p>Protect your work before long sessions or installs on another machine.</p>
+                        <ul class="list-plain">
+                            <li>Use File > Backup and Restore to export everything.</li>
+                            <li>Backups include target groups, history, and preferences.</li>
+                            <li>Store the backup offline or in a private cloud folder.</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="content-width">
+                <div class="section-header">
+                    <span class="section-tag">Reliability</span>
+                    <h2 class="section-title">Safety and troubleshooting</h2>
+                    <p class="section-subtitle">A few simple habits keep your API key secure and the app responsive.</p>
+                </div>
+                <div class="dual-grid">
+                    <div class="card">
+                        <div class="kicker">Stay safe</div>
+                        <ul class="list-plain">
+                            <li>AES-256-GCM encryption and sandboxed renderer keep your key guarded.</li>
+                            <li>Run the app from a local drive; avoid shared or synced temp folders.</li>
+                            <li>Use the built-in rate limiter. Manual API bursts can lead to 429 errors.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="kicker">If something feels off</div>
+                        <ul class="list-plain">
+                            <li>Check the status bar for rate limit warnings or API errors.</li>
+                            <li>Refresh tokens by re-entering the API key if status reads invalid.</li>
+                            <li>Open a GitHub issue with logs attached for repeatable bugs.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section">
+            <div class="content-width">
+                <div class="section-header">
+                    <span class="section-tag">Support</span>
+                    <h2 class="section-title">Need a hand?</h2>
+                    <p class="section-subtitle">The fastest way to get help is to share the exact error, your Torn ID, and the step you were taking.</p>
+                </div>
+                <div class="card-grid">
+                    <article class="card">
+                        <h3>File a ticket</h3>
+                        <p>Open an issue on GitHub with screenshots and logs.</p>
+                        <a class="btn btn-ghost" href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank" rel="noopener">Report an issue</a>
+                    </article>
+                    <article class="card">
+                        <h3>Verify your install</h3>
+                        <p>Match the release hash from GitHub before running the installer. Re-run the installer if files were quarantined.</p>
+                    </article>
+                    <article class="card">
+                        <h3>Reset in place</h3>
+                        <p>Re-enter the API key and restart the app to clear stale sessions. Restore from backup if you reset data.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer-simple">
+        <div class="content-width">
+            <span>Built for Torn City operators. Stay sharp and respect Torn's API rules.</span>
+            <div class="footer-links">
+                <a href="index.html">Back to landing</a>
+                <a href="release-notes.html">Release notes</a>
+                <a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

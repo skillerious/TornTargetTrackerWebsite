@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Torn Target Tracker — Intelligence Overlay for Torn City Operations</title>
+    <title>Torn Target Tracker - Intelligence Overlay for Torn City Operations</title>
     <meta name="description" content="The ultimate Electron desktop app for Torn.com chain targets. Live status, smart rate limiting, encrypted API key storage, and keyboard-first workflow.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -606,6 +606,38 @@
             font-size: 1.1rem;
         }
 
+        .section-actions {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .section-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            text-decoration: none;
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.04);
+            transition: all 0.3s ease;
+        }
+
+        .section-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .section-link:hover {
+            border-color: var(--border-glow);
+            color: var(--accent-cyan);
+            transform: translateY(-2px);
+        }
+
         .features-grid {
             max-width: 1400px;
             margin: 0 auto;
@@ -844,22 +876,166 @@
             border: 1px solid var(--border-subtle);
             border-radius: 10px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .tech-item:hover {
             border-color: var(--border-glow);
             background: rgba(0, 245, 212, 0.05);
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
         }
 
         .tech-icon {
-            width: 44px;
-            height: 44px;
+            --icon-grad-start: rgba(0, 245, 212, 0.32);
+            --icon-grad-end: rgba(58, 134, 255, 0.22);
+            --icon-ring: rgba(0, 245, 212, 0.55);
+            --icon-glow: rgba(0, 245, 212, 0.4);
+            width: 60px;
+            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            font-size: 1.4rem;
+            position: relative;
+            isolation: isolate;
+            border-radius: 16px;
+            background:
+                radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.08), transparent 45%),
+                linear-gradient(135deg, var(--icon-grad-start), var(--icon-grad-end));
+            border: 1px solid var(--icon-ring);
+            box-shadow: 0 0 22px var(--icon-glow);
+            color: var(--text-primary);
+        }
+
+        .tech-icon svg {
+            width: 34px;
+            height: 34px;
+            color: var(--text-primary);
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 6px var(--icon-glow));
+            z-index: 1;
+        }
+
+        .tech-icon::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 18px;
+            border: 1px solid var(--icon-ring);
+            opacity: 0.35;
+            filter: blur(6px);
+            z-index: 0;
+        }
+
+        .tech-icon::after {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border-radius: 12px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.08) 0%, transparent 60%);
+            opacity: 0.55;
+            z-index: 0;
+        }
+
+        .tech-asset {
+            display: block;
+            width: 34px;
+            height: 34px;
+            background: currentColor;
+            mask-repeat: no-repeat;
+            mask-position: center;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            -webkit-mask-size: contain;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 0 6px var(--icon-glow));
+        }
+
+        .tech-asset-electron {
+            mask-image: url('assets/electron.svg');
+            -webkit-mask-image: url('assets/electron.svg');
+        }
+
+        .tech-asset-apple {
+            mask-image: url('assets/apple.svg');
+            -webkit-mask-image: url('assets/apple.svg');
+        }
+
+        .tech-asset-linux {
+            mask-image: url('assets/linux.svg');
+            -webkit-mask-image: url('assets/linux.svg');
+        }
+
+        .tech-asset-node {
+            mask-image: url('assets/node.svg');
+            -webkit-mask-image: url('assets/node.svg');
+        }
+
+        .tech-asset-aes {
+            mask-image: url('assets/aes.svg');
+            -webkit-mask-image: url('assets/aes.svg');
+        }
+
+        .tech-asset-windows {
+            mask-image: url('assets/windows.svg');
+            -webkit-mask-image: url('assets/windows.svg');
+        }
+
+        .tech-asset-mit {
+            mask-image: url('assets/mit.svg');
+            -webkit-mask-image: url('assets/mit.svg');
+        }
+
+        .tech-asset-store {
+            mask-image: url('assets/store.svg');
+            -webkit-mask-image: url('assets/store.svg');
+        }
+
+        .tech-item[data-accent="cyan"] .tech-icon {
+            --icon-grad-start: rgba(0, 245, 212, 0.38);
+            --icon-grad-end: rgba(58, 134, 255, 0.28);
+            --icon-ring: rgba(0, 245, 212, 0.55);
+            --icon-glow: rgba(0, 245, 212, 0.45);
+        }
+        .tech-item[data-accent="green"] .tech-icon {
+            --icon-grad-start: rgba(0, 255, 136, 0.35);
+            --icon-grad-end: rgba(0, 245, 212, 0.25);
+            --icon-ring: rgba(0, 255, 136, 0.55);
+            --icon-glow: rgba(0, 255, 136, 0.42);
+        }
+        .tech-item[data-accent="purple"] .tech-icon {
+            --icon-grad-start: rgba(131, 56, 236, 0.4);
+            --icon-grad-end: rgba(58, 134, 255, 0.25);
+            --icon-ring: rgba(131, 56, 236, 0.55);
+            --icon-glow: rgba(131, 56, 236, 0.42);
+        }
+        .tech-item[data-accent="blue"] .tech-icon {
+            --icon-grad-start: rgba(58, 134, 255, 0.4);
+            --icon-grad-end: rgba(0, 245, 212, 0.22);
+            --icon-ring: rgba(58, 134, 255, 0.55);
+            --icon-glow: rgba(58, 134, 255, 0.45);
+        }
+        .tech-item[data-accent="gold"] .tech-icon {
+            --icon-grad-start: rgba(255, 214, 10, 0.42);
+            --icon-grad-end: rgba(255, 125, 26, 0.24);
+            --icon-ring: rgba(255, 214, 10, 0.6);
+            --icon-glow: rgba(255, 214, 10, 0.42);
+        }
+        .tech-item[data-accent="red"] .tech-icon {
+            --icon-grad-start: rgba(255, 71, 87, 0.42);
+            --icon-grad-end: rgba(255, 0, 110, 0.24);
+            --icon-ring: rgba(255, 71, 87, 0.6);
+            --icon-glow: rgba(255, 71, 87, 0.42);
+        }
+        .tech-item[data-accent="magenta"] .tech-icon {
+            --icon-grad-start: rgba(255, 0, 110, 0.42);
+            --icon-grad-end: rgba(131, 56, 236, 0.24);
+            --icon-ring: rgba(255, 0, 110, 0.55);
+            --icon-glow: rgba(255, 0, 110, 0.42);
         }
 
         .tech-name {
@@ -871,6 +1047,86 @@
             font-size: 0.8rem;
             color: var(--text-muted);
             font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Resources Section */
+        .resources {
+            position: relative;
+            padding: 120px 2rem;
+            z-index: 10;
+        }
+
+        .resource-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+            gap: 1.5rem;
+        }
+
+        .resource-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover {
+            border-color: var(--border-glow);
+            transform: translateY(-4px);
+            box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+        }
+
+        .resource-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-cyan);
+            font-weight: 700;
+        }
+
+        .resource-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .resource-desc {
+            color: var(--text-secondary);
+        }
+
+        .resource-meta {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .resource-meta span {
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-subtle);
+            border-radius: 999px;
+        }
+
+        .resource-link {
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .resource-link svg {
+            width: 16px;
+            height: 16px;
         }
 
         /* Download Section */
@@ -1667,6 +1923,7 @@
             .screenshots,
             .whats-new,
             .tech-stack,
+            .resources,
             .download {
                 padding: 80px 1rem;
             }
@@ -2129,6 +2386,8 @@
                 <li><a href="#features">Features</a></li>
                 <li><a href="#screenshots">Screenshots</a></li>
                 <li><a href="#whats-new">What's New</a></li>
+                <li><a href="guide.html">Guide</a></li>
+                <li><a href="release-notes.html">Release Notes</a></li>
                 <li><a href="#download">Download</a></li>
             </ul>
             <div class="nav-cta">
@@ -2211,6 +2470,30 @@
                     </a>
                 </li>
                 <li class="mobile-nav-item">
+                    <a href="guide.html" class="mobile-nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                            <path d="M4 4.5A2.5 2.5 0 0 1 6.5 7H20"/>
+                            <path d="M4 4.5v15"/>
+                            <path d="M20 4.5v15"/>
+                        </svg>
+                        Guide
+                    </a>
+                </li>
+                <li class="mobile-nav-item">
+                    <a href="release-notes.html" class="mobile-nav-link">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M6 4h12"/>
+                            <path d="M6 8h12"/>
+                            <path d="M6 12h8"/>
+                            <path d="M6 16h6"/>
+                            <path d="M6 20h10"/>
+                            <path d="M4 2v20"/>
+                        </svg>
+                        Release Notes
+                    </a>
+                </li>
+                <li class="mobile-nav-item">
                     <a href="#download" class="mobile-nav-link">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -2255,7 +2538,7 @@
                     View All Releases
                 </a>
             </div>
-            <p class="mobile-menu-version">Version 2.7.9 • 98.1 MB</p>
+            <p class="mobile-menu-version">Version 2.7.9 | 98.1 MB</p>
         </div>
     </div>
 
@@ -2452,7 +2735,7 @@
                     <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194930.png" alt="Rate Limit Popover" data-screenshot="ratelimit">
                     <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194954.png" alt="Backup & Restore" data-screenshot="backup">
                 </div>
-                <p class="screenshot-caption" id="screenshot-caption">Target Command Center — Your central hub for all operations</p>
+                <p class="screenshot-caption" id="screenshot-caption">Target Command Center - Your central hub for all operations</p>
             </div>
         </div>
     </section>
@@ -2464,6 +2747,22 @@
                 <span class="section-tag">Version 2.7.9</span>
                 <h2 class="section-title">What's New</h2>
                 <p class="section-subtitle">Latest features and improvements in the newest release.</p>
+                <div class="section-actions">
+                    <a class="section-link" href="release-notes.html">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 12h16"/>
+                            <path d="M13 5l7 7-7 7"/>
+                        </svg>
+                        Full release notes
+                    </a>
+                    <a class="section-link" href="guide.html">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M4 12h16"/>
+                            <path d="M13 5l7 7-7 7"/>
+                        </svg>
+                        Operator guide
+                    </a>
+                </div>
             </div>
             <div class="changelog-list">
                 <div class="changelog-item reveal">
@@ -2524,7 +2823,7 @@
                     </div>
                     <div class="changelog-content">
                         <h4>Backup & Restore System</h4>
-                        <p>Full backup system including target list, groups, attack history, statistics, and settings. Access via File → Backup and Restore.</p>
+                        <p>Full backup system including target list, groups, attack history, statistics, and settings. Access via File > Backup and Restore.</p>
                     </div>
                 </div>
                 <div class="changelog-item reveal">
@@ -2561,61 +2860,153 @@
             <p class="section-subtitle">Powered by proven technologies for reliability and performance.</p>
         </div>
         <div class="tech-grid">
-            <div class="tech-item reveal">
-                <div class="tech-icon">⚡</div>
+            <div class="tech-item reveal" data-accent="cyan">
+                <div class="tech-icon" aria-hidden="true">
+                    <span class="tech-asset tech-asset-electron"></span>
+                </div>
                 <div>
                     <div class="tech-name">Electron</div>
                     <div class="tech-version">v28.0.0</div>
                 </div>
             </div>
-            <div class="tech-item reveal">
-                <div class="tech-icon">🟢</div>
+            <div class="tech-item reveal" data-accent="green">
+                <div class="tech-icon" aria-hidden="true">
+                    <span class="tech-asset tech-asset-node"></span>
+                </div>
                 <div>
                     <div class="tech-name">Node.js</div>
                     <div class="tech-version">18+</div>
                 </div>
             </div>
-            <div class="tech-item reveal">
-                <div class="tech-icon">🔐</div>
+            <div class="tech-item reveal" data-accent="magenta">
+                <div class="tech-icon" aria-hidden="true">
+                    <span class="tech-asset tech-asset-aes"></span>
+                </div>
                 <div>
                     <div class="tech-name">AES-256-GCM</div>
                     <div class="tech-version">Encryption</div>
                 </div>
             </div>
-            <div class="tech-item reveal">
-                <div class="tech-icon">💾</div>
+            <div class="tech-item reveal" data-accent="purple">
+                <div class="tech-icon" aria-hidden="true">
+                    <span class="tech-asset tech-asset-store"></span>
+                </div>
                 <div>
                     <div class="tech-name">Electron Store</div>
                     <div class="tech-version">Persistence</div>
                 </div>
             </div>
-            <div class="tech-item reveal">
-                <div class="tech-icon">🪟</div>
+            <div class="tech-item reveal" data-accent="blue">
+                <div class="tech-icon" aria-hidden="true">
+                    <span class="tech-asset tech-asset-windows"></span>
+                </div>
                 <div>
                     <div class="tech-name">Windows</div>
                     <div class="tech-version">Supported</div>
                 </div>
             </div>
-            <div class="tech-item reveal">
-                <div class="tech-icon">🍎</div>
+            <div class="tech-item reveal" data-accent="gold">
+                <div class="tech-icon" aria-hidden="true">
+                    <span class="tech-asset tech-asset-apple"></span>
+                </div>
                 <div>
                     <div class="tech-name">macOS</div>
-                    <div class="tech-version">Supported</div>
+                    <div class="tech-version">Unsupported</div>
                 </div>
             </div>
-            <div class="tech-item reveal">
-                <div class="tech-icon">🐧</div>
+            <div class="tech-item reveal" data-accent="green">
+                <div class="tech-icon" aria-hidden="true">
+                    <span class="tech-asset tech-asset-linux"></span>
+                </div>
                 <div>
                     <div class="tech-name">Linux</div>
-                    <div class="tech-version">Supported</div>
+                    <div class="tech-version">Unsupported</div>
                 </div>
             </div>
-            <div class="tech-item reveal">
-                <div class="tech-icon">📜</div>
+            <div class="tech-item reveal" data-accent="red">
+                <div class="tech-icon" aria-hidden="true">
+                    <span class="tech-asset tech-asset-mit"></span>
+                </div>
                 <div>
                     <div class="tech-name">MIT License</div>
                     <div class="tech-version">Open Source</div>
                 </div>
+            </div>
+        </div>
+        <p class="section-subtitle" style="text-align:center; margin-top: 1rem;">Unsupported OS will be available in the future.</p>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="resources" id="resources">
+        <div class="section-header reveal">
+            <span class="section-tag">More Detail</span>
+            <h2 class="section-title">Operator Resources</h2>
+            <p class="section-subtitle">Deep dives stay on their own pages so the landing view remains fast and focused.</p>
+            <div class="section-actions">
+                <a class="section-link" href="guide.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12h16"/>
+                        <path d="M13 5l7 7-7 7"/>
+                    </svg>
+                    Open the operator guide
+                </a>
+                <a class="section-link" href="release-notes.html">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12h16"/>
+                        <path d="M13 5l7 7-7 7"/>
+                    </svg>
+                    Read release notes
+                </a>
+            </div>
+        </div>
+        <div class="resource-grid">
+            <div class="resource-card reveal">
+                <div class="resource-label">Guide</div>
+                <h3 class="resource-title">Quickstart and workflows</h3>
+                <p class="resource-desc">Setup checklist, grouping strategy, and chain-ready refresh advice in one page.</p>
+                <div class="resource-meta">
+                    <span>Setup</span>
+                    <span>Chains</span>
+                </div>
+                <a class="resource-link" href="guide.html">
+                    Open the guide
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12h16"/>
+                        <path d="M13 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="resource-card reveal">
+                <div class="resource-label">Release notes</div>
+                <h3 class="resource-title">Full changelog</h3>
+                <p class="resource-desc">See everything in v2.7.9 plus earlier API, backup, and UI improvements.</p>
+                <div class="resource-meta">
+                    <span>Changelog</span>
+                    <span>Download</span>
+                </div>
+                <a class="resource-link" href="release-notes.html">
+                    View release notes
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12h16"/>
+                        <path d="M13 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="resource-card reveal">
+                <div class="resource-label">Support</div>
+                <h3 class="resource-title">Issue desk</h3>
+                <p class="resource-desc">Report bugs or request features with logs and screenshots for faster triage.</p>
+                <div class="resource-meta">
+                    <span>Support</span>
+                    <span>Bug reports</span>
+                </div>
+                <a class="resource-link" href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank" rel="noopener">
+                    Open issues
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12h16"/>
+                        <path d="M13 5l7 7-7 7"/>
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
@@ -2694,6 +3085,8 @@
                             <li><a href="#features">Features</a></li>
                             <li><a href="#screenshots">Screenshots</a></li>
                             <li><a href="#whats-new">Changelog</a></li>
+                            <li><a href="guide.html">Operator Guide</a></li>
+                            <li><a href="release-notes.html">Release Notes</a></li>
                             <li><a href="#download">Download</a></li>
                         </ul>
                     </div>
@@ -2716,7 +3109,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="footer-copyright">© 2025 Torn Target Tracker. Not affiliated with Torn.com. Use responsibly.</p>
+                <p class="footer-copyright">(c) 2025 Torn Target Tracker. Not affiliated with Torn.com. Use responsibly.</p>
                 <div class="footer-social">
                     <a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank" aria-label="GitHub">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
