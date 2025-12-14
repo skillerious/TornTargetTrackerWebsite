@@ -10,7 +10,7 @@
     // ===== CONFIGURATION =====
     const CONFIG = {
         particleCount: { mobile: 15, desktop: 30 },
-        mobileBreakpoint: 768,
+        mobileBreakpoint: 900,
         scrollThreshold: 50,
         throttleDelay: 16, // ~60fps
         resizeThrottle: 250,
@@ -437,6 +437,77 @@
         });
     }
 
+    // ===== DROPDOWN MENUS =====
+
+    /**
+     * Initialize dropdown menu keyboard accessibility
+     */
+    function initDropdownMenus() {
+        const dropdowns = document.querySelectorAll('.nav-dropdown');
+
+        dropdowns.forEach(dropdown => {
+            const trigger = dropdown.querySelector('.nav-dropdown-trigger');
+            const menu = dropdown.querySelector('.nav-dropdown-menu');
+
+            if (!trigger || !menu) return;
+
+            // Toggle on click for touch devices
+            trigger.addEventListener('click', (e) => {
+                e.preventDefault();
+                const isOpen = dropdown.classList.contains('open');
+
+                // Close all other dropdowns
+                dropdowns.forEach(d => d.classList.remove('open'));
+
+                if (!isOpen) {
+                    dropdown.classList.add('open');
+                }
+            });
+
+            // Keyboard navigation
+            trigger.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    dropdown.classList.toggle('open');
+                } else if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    dropdown.classList.add('open');
+                    const firstLink = menu.querySelector('a');
+                    if (firstLink) firstLink.focus();
+                } else if (e.key === 'Escape') {
+                    dropdown.classList.remove('open');
+                    trigger.focus();
+                }
+            });
+
+            // Menu item keyboard navigation
+            const menuLinks = menu.querySelectorAll('a');
+            menuLinks.forEach((link, index) => {
+                link.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const next = menuLinks[index + 1] || menuLinks[0];
+                        next.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prev = menuLinks[index - 1] || menuLinks[menuLinks.length - 1];
+                        prev.focus();
+                    } else if (e.key === 'Escape') {
+                        dropdown.classList.remove('open');
+                        trigger.focus();
+                    }
+                });
+            });
+        });
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-dropdown')) {
+                dropdowns.forEach(d => d.classList.remove('open'));
+            }
+        });
+    }
+
     // ===== INITIALIZATION =====
 
     /**
@@ -453,6 +524,7 @@
         // Interactive features
         initScreenshotTabs();
         initSmoothScroll();
+        initDropdownMenus();
         initEventListeners();
 
         // Initial state checks
