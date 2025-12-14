@@ -1,7 +1,8 @@
 /**
  * Torn Target Tracker - Website JavaScript
  * Handles navigation, animations, and interactive features
- * @version 2.0.0
+ * @version 3.0.0
+ * @author Robin Doak
  */
 
 (function() {
@@ -14,7 +15,23 @@
         scrollThreshold: 50,
         throttleDelay: 16, // ~60fps
         resizeThrottle: 250,
-        revealOffset: 100
+        revealOffset: 100,
+        backToTopThreshold: 300,
+        swipeThreshold: 50,
+        lazyLoadMargin: '100px',
+        navbarHideThreshold: 5,
+        screenshotAutoplayInterval: 5000,
+        progressRingCircumference: 125.6 // 2 * PI * 20 (radius)
+    };
+
+    // ===== STATE =====
+    const state = {
+        lastScrollY: 0,
+        scrollDirection: 'up',
+        ticking: false,
+        isNavbarHidden: false,
+        screenshotAutoplay: null,
+        hasShownBackToTop: false
     };
 
     // ===== DOM ELEMENTS =====
@@ -28,7 +45,9 @@
         particlesContainer: document.getElementById('particles'),
         screenshotTabs: document.querySelectorAll('.screenshot-tab'),
         screenshots: document.querySelectorAll('.screenshot-frame img'),
-        screenshotCaption: document.getElementById('screenshot-caption')
+        screenshotCaption: document.getElementById('screenshot-caption'),
+        backToTopBtn: null, // Will be set in init
+        progressRing: null  // Will be set in init
     };
 
     // Screenshot captions mapping
@@ -43,6 +62,24 @@
     };
 
     // ===== UTILITY FUNCTIONS =====
+
+    /**
+     * Throttle function using requestAnimationFrame for smooth performance
+     * @param {Function} func - Function to throttle
+     * @returns {Function} - Throttled function
+     */
+    function rafThrottle(func) {
+        let ticking = false;
+        return function(...args) {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    func.apply(this, args);
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+    }
 
     /**
      * Throttle function for performance optimization
@@ -62,6 +99,50 @@
     }
 
     /**
+     * Debounce function for delayed execution
+     * @param {Function} func - Function to debounce
+     * @param {number} wait - Wait time in milliseconds
+     * @returns {Function} - Debounced function
+     */
+    function debounce(func, wait) {
+        let timeout;
+        return function(...args) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => func.apply(this, args), wait);
+        };
+    }
+
+    /**
+     * Safely query DOM element with error handling
+     * @param {string} selector - CSS selector
+     * @param {Element} context - Context element
+     * @returns {Element|null}
+     */
+    function $(selector, context = document) {
+        try {
+            return context.querySelector(selector);
+        } catch (e) {
+            console.warn(`Invalid selector: ${selector}`);
+            return null;
+        }
+    }
+
+    /**
+     * Safely query all DOM elements with error handling
+     * @param {string} selector - CSS selector
+     * @param {Element} context - Context element
+     * @returns {NodeList}
+     */
+    function $$(selector, context = document) {
+        try {
+            return context.querySelectorAll(selector);
+        } catch (e) {
+            console.warn(`Invalid selector: ${selector}`);
+            return [];
+        }
+    }
+
+    /**
      * Check if user prefers reduced motion
      * @returns {boolean}
      */
@@ -75,6 +156,35 @@
      */
     function isMobile() {
         return window.innerWidth < CONFIG.mobileBreakpoint;
+    }
+
+    /**
+     * Check if device supports touch
+     * @returns {boolean}
+     */
+    function isTouchDevice() {
+        return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    }
+
+    /**
+     * Clamp a value between min and max
+     * @param {number} value - Value to clamp
+     * @param {number} min - Minimum value
+     * @param {number} max - Maximum value
+     * @returns {number}
+     */
+    function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+    /**
+     * Get scroll percentage of the page
+     * @returns {number} - Scroll percentage (0-1)
+     */
+    function getScrollPercent() {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        return docHeight > 0 ? clamp(scrollTop / docHeight, 0, 1) : 0;
     }
 
     // ===== MOBILE MENU =====
@@ -147,11 +257,33 @@
     // ===== NAVIGATION =====
 
     /**
-     * Handle navbar scroll effect
+     * Handle navbar scroll effect with auto-hide on scroll down
      */
     function handleNavbarScroll() {
-        if (!elements.navbar) return;
-        elements.navbar.classList.toggle('scrolled', window.scrollY > CONFIG.scrollThreshold);
+        const { navbar } = elements;
+        if (!navbar) return;
+
+        const currentScrollY = window.scrollY;
+        const scrollDiff = currentScrollY - state.lastScrollY;
+
+        // Add/remove scrolled class for background
+        navbar.classList.toggle('scrolled', currentScrollY > CONFIG.scrollThreshold);
+
+        // Auto-hide navbar on scroll down (only on desktop and when not at top)
+        if (!isMobile() && currentScrollY > CONFIG.scrollThreshold * 2) {
+            if (scrollDiff > CONFIG.navbarHideThreshold && !state.isNavbarHidden) {
+                navbar.style.transform = 'translateY(-100%)';
+                state.isNavbarHidden = true;
+            } else if (scrollDiff < -CONFIG.navbarHideThreshold && state.isNavbarHidden) {
+                navbar.style.transform = 'translateY(0)';
+                state.isNavbarHidden = false;
+            }
+        } else {
+            navbar.style.transform = 'translateY(0)';
+            state.isNavbarHidden = false;
+        }
+
+        state.lastScrollY = currentScrollY;
     }
 
     /**
@@ -178,6 +310,9 @@
                         top: targetPosition,
                         behavior: prefersReducedMotion() ? 'auto' : 'smooth'
                     });
+
+                    // Update URL without triggering scroll
+                    history.pushState(null, '', href);
                 }
             });
         });
@@ -196,6 +331,7 @@
 
         const count = isMobile() ? CONFIG.particleCount.mobile : CONFIG.particleCount.desktop;
 
+        const fragment = document.createDocumentFragment();
         for (let i = 0; i < count; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
@@ -205,92 +341,160 @@
                 animation-duration: ${15 + Math.random() * 15}s;
                 ${Math.random() > 0.5 ? 'background: #ff006e;' : ''}
             `;
-            elements.particlesContainer.appendChild(particle);
+            fragment.appendChild(particle);
         }
+        elements.particlesContainer.appendChild(fragment);
     }
 
     // ===== SCREENSHOT GALLERY =====
 
     /**
+     * Switch to a specific screenshot tab
+     * @param {number} index - Tab index to switch to
+     */
+    function switchScreenshotTab(index) {
+        const { screenshotTabs, screenshots, screenshotCaption } = elements;
+        if (!screenshotTabs.length) return;
+
+        const tab = screenshotTabs[index];
+        if (!tab) return;
+
+        const target = tab.dataset.tab;
+
+        // Update tabs
+        screenshotTabs.forEach((t, i) => {
+            t.classList.toggle('active', i === index);
+            t.setAttribute('aria-selected', i === index ? 'true' : 'false');
+            t.setAttribute('tabindex', i === index ? '0' : '-1');
+        });
+
+        // Update screenshots with fade effect
+        screenshots.forEach(img => {
+            img.classList.toggle('active', img.dataset.screenshot === target);
+        });
+
+        // Update caption
+        if (screenshotCaption && captions[target]) {
+            screenshotCaption.textContent = captions[target];
+        }
+    }
+
+    /**
+     * Get current active screenshot index
+     * @returns {number}
+     */
+    function getActiveScreenshotIndex() {
+        const tabs = Array.from(elements.screenshotTabs);
+        return tabs.findIndex(tab => tab.classList.contains('active'));
+    }
+
+    /**
      * Initialize screenshot gallery tabs
      */
     function initScreenshotTabs() {
-        const { screenshotTabs, screenshots, screenshotCaption } = elements;
+        const { screenshotTabs } = elements;
         if (!screenshotTabs || screenshotTabs.length === 0) return;
 
-        screenshotTabs.forEach((tab) => {
+        screenshotTabs.forEach((tab, index) => {
             // Click handler
-            tab.addEventListener('click', () => {
-                const target = tab.dataset.tab;
-                if (!target) return;
-
-                // Update tabs
-                screenshotTabs.forEach((t) => {
-                    t.classList.toggle('active', t === tab);
-                    t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
-                    t.setAttribute('tabindex', t === tab ? '0' : '-1');
-                });
-
-                // Update screenshots with fade effect
-                screenshots.forEach(img => {
-                    img.classList.toggle('active', img.dataset.screenshot === target);
-                });
-
-                // Update caption
-                if (screenshotCaption && captions[target]) {
-                    screenshotCaption.textContent = captions[target];
-                }
-            });
+            tab.addEventListener('click', () => switchScreenshotTab(index));
 
             // Keyboard navigation
             tab.addEventListener('keydown', (e) => {
                 const tabs = Array.from(screenshotTabs);
-                const currentIndex = tabs.indexOf(tab);
                 let nextIndex;
 
                 switch (e.key) {
                     case 'ArrowRight':
                     case 'ArrowDown':
                         e.preventDefault();
-                        nextIndex = (currentIndex + 1) % tabs.length;
+                        nextIndex = (index + 1) % tabs.length;
                         tabs[nextIndex].focus();
-                        tabs[nextIndex].click();
+                        switchScreenshotTab(nextIndex);
                         break;
                     case 'ArrowLeft':
                     case 'ArrowUp':
                         e.preventDefault();
-                        nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                        nextIndex = (index - 1 + tabs.length) % tabs.length;
                         tabs[nextIndex].focus();
-                        tabs[nextIndex].click();
+                        switchScreenshotTab(nextIndex);
                         break;
                     case 'Home':
                         e.preventDefault();
                         tabs[0].focus();
-                        tabs[0].click();
+                        switchScreenshotTab(0);
                         break;
                     case 'End':
                         e.preventDefault();
                         tabs[tabs.length - 1].focus();
-                        tabs[tabs.length - 1].click();
+                        switchScreenshotTab(tabs.length - 1);
                         break;
                 }
             });
         });
     }
 
+    /**
+     * Start screenshot autoplay rotation
+     */
+    function startScreenshotAutoplay() {
+        if (state.screenshotAutoplay || prefersReducedMotion()) return;
+
+        state.screenshotAutoplay = setInterval(() => {
+            const currentIndex = getActiveScreenshotIndex();
+            const nextIndex = (currentIndex + 1) % elements.screenshotTabs.length;
+            switchScreenshotTab(nextIndex);
+        }, CONFIG.screenshotAutoplayInterval);
+    }
+
+    /**
+     * Stop screenshot autoplay rotation
+     */
+    function stopScreenshotAutoplay() {
+        if (state.screenshotAutoplay) {
+            clearInterval(state.screenshotAutoplay);
+            state.screenshotAutoplay = null;
+        }
+    }
+
     // ===== SCROLL ANIMATIONS =====
 
     /**
-     * Handle scroll reveal animations
+     * Initialize scroll reveal using Intersection Observer for better performance
      */
-    function handleScrollReveal() {
+    function initScrollReveal() {
+        const reveals = $$('.reveal');
+
         if (prefersReducedMotion()) {
-            // Show all elements immediately if reduced motion is preferred
-            document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
+            reveals.forEach(el => el.classList.add('visible'));
             return;
         }
 
-        const reveals = document.querySelectorAll('.reveal:not(.visible)');
+        if ('IntersectionObserver' in window) {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: `-${CONFIG.revealOffset}px`
+            });
+
+            reveals.forEach(el => revealObserver.observe(el));
+        } else {
+            // Fallback for older browsers
+            handleScrollRevealFallback();
+        }
+    }
+
+    /**
+     * Fallback scroll reveal for older browsers
+     */
+    function handleScrollRevealFallback() {
+        const reveals = $$('.reveal:not(.visible)');
         const windowHeight = window.innerHeight;
 
         reveals.forEach(el => {
@@ -301,7 +505,7 @@
         });
     }
 
-    // ===== IMAGE PRELOADING =====
+    // ===== IMAGE PRELOADING & LAZY LOADING =====
 
     /**
      * Preload screenshot images for smoother transitions
@@ -316,21 +520,210 @@
     }
 
     /**
+     * Initialize lazy loading for images using Intersection Observer
+     */
+    function initLazyLoading() {
+        const lazyImages = $$('img[data-src]');
+
+        if (!lazyImages.length) return;
+
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                        img.classList.add('lazy-loaded');
+                        imageObserver.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: CONFIG.lazyLoadMargin
+            });
+
+            lazyImages.forEach(img => imageObserver.observe(img));
+        } else {
+            // Fallback for older browsers
+            lazyImages.forEach(img => {
+                img.src = img.dataset.src;
+                img.removeAttribute('data-src');
+            });
+        }
+    }
+
+    /**
      * Handle image load states
      */
     function initImageLoadHandlers() {
-        const allImages = document.querySelectorAll('.hero-image, .screenshot-frame img');
+        const allImages = $$('.hero-image, .screenshot-frame img');
 
         allImages.forEach(img => {
             if (img.complete) {
                 img.classList.add('loaded');
             } else {
-                img.addEventListener('load', () => {
-                    img.classList.add('loaded');
-                });
-                img.addEventListener('error', () => {
-                    img.classList.add('error');
-                });
+                img.addEventListener('load', () => img.classList.add('loaded'));
+                img.addEventListener('error', () => img.classList.add('error'));
+            }
+        });
+    }
+
+    // ===== BACK TO TOP BUTTON =====
+
+    /**
+     * Update scroll progress ring
+     */
+    function updateScrollProgress() {
+        if (!elements.progressRing) return;
+
+        const scrollPercent = getScrollPercent();
+        const offset = CONFIG.progressRingCircumference * (1 - scrollPercent);
+        elements.progressRing.style.strokeDashoffset = offset;
+    }
+
+    /**
+     * Initialize back-to-top button with scroll progress
+     */
+    function initBackToTop() {
+        elements.backToTopBtn = $('.back-to-top');
+        elements.progressRing = $('.progress-ring-circle');
+
+        if (!elements.backToTopBtn) return;
+
+        // Click handler
+        elements.backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: prefersReducedMotion() ? 'auto' : 'smooth'
+            });
+        });
+
+        // Keyboard support
+        elements.backToTopBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                elements.backToTopBtn.click();
+            }
+        });
+    }
+
+    /**
+     * Handle back-to-top visibility and progress
+     */
+    function handleBackToTop() {
+        if (!elements.backToTopBtn) return;
+
+        const shouldShow = window.scrollY > CONFIG.backToTopThreshold;
+
+        if (shouldShow && !elements.backToTopBtn.classList.contains('visible')) {
+            elements.backToTopBtn.classList.add('visible');
+
+            // Add pulse animation on first appearance
+            if (!state.hasShownBackToTop) {
+                state.hasShownBackToTop = true;
+                elements.backToTopBtn.classList.add('pulse');
+                setTimeout(() => {
+                    elements.backToTopBtn.classList.remove('pulse');
+                }, 2000);
+            }
+        } else if (!shouldShow) {
+            elements.backToTopBtn.classList.remove('visible');
+        }
+
+        // Update progress ring
+        updateScrollProgress();
+    }
+
+    // ===== TOUCH GESTURES =====
+
+    /**
+     * Initialize swipe gestures for screenshot gallery
+     */
+    function initSwipeGestures() {
+        const gallery = $('.screenshot-frame');
+        if (!gallery || !elements.screenshotTabs.length) return;
+
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let touchEndX = 0;
+        let touchEndY = 0;
+
+        gallery.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+            touchStartY = e.changedTouches[0].screenY;
+            stopScreenshotAutoplay(); // Stop autoplay on interaction
+        }, { passive: true });
+
+        gallery.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const diffX = touchStartX - touchEndX;
+            const diffY = touchStartY - touchEndY;
+
+            // Only handle horizontal swipes (ignore vertical scrolling)
+            if (Math.abs(diffX) < CONFIG.swipeThreshold || Math.abs(diffY) > Math.abs(diffX)) {
+                return;
+            }
+
+            const currentIndex = getActiveScreenshotIndex();
+            let nextIndex;
+
+            if (diffX > 0) {
+                // Swipe left - next
+                nextIndex = (currentIndex + 1) % elements.screenshotTabs.length;
+            } else {
+                // Swipe right - previous
+                nextIndex = (currentIndex - 1 + elements.screenshotTabs.length) % elements.screenshotTabs.length;
+            }
+
+            switchScreenshotTab(nextIndex);
+        }
+    }
+
+    // ===== KEYBOARD SHORTCUTS =====
+
+    /**
+     * Initialize keyboard shortcuts
+     */
+    function initKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Don't trigger shortcuts when typing in inputs
+            if (e.target.matches('input, textarea, select, [contenteditable]')) return;
+
+            switch (e.key) {
+                case 'Escape':
+                    if (isMobileMenuOpen()) {
+                        closeMobileMenu();
+                    }
+                    break;
+
+                case 't':
+                case 'T':
+                    // Scroll to top
+                    if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                        window.scrollTo({
+                            top: 0,
+                            behavior: prefersReducedMotion() ? 'auto' : 'smooth'
+                        });
+                    }
+                    break;
+
+                case 'd':
+                case 'D':
+                    // Jump to download section
+                    if (!e.ctrlKey && !e.metaKey && !e.altKey) {
+                        const downloadSection = $('#download');
+                        if (downloadSection) {
+                            downloadSection.scrollIntoView({
+                                behavior: prefersReducedMotion() ? 'auto' : 'smooth'
+                            });
+                        }
+                    }
+                    break;
             }
         });
     }
@@ -338,13 +731,12 @@
     // ===== EVENT HANDLERS =====
 
     /**
-     * Handle escape key press
+     * Master scroll handler using RAF for performance
      */
-    function handleEscapeKey(e) {
-        if (e.key === 'Escape' && isMobileMenuOpen()) {
-            closeMobileMenu();
-        }
-    }
+    const handleScroll = rafThrottle(() => {
+        handleNavbarScroll();
+        handleBackToTop();
+    });
 
     /**
      * Handle window resize
@@ -381,7 +773,7 @@
         });
 
         // Tab container
-        const tabContainer = document.querySelector('.screenshot-tabs');
+        const tabContainer = $('.screenshot-tabs');
         if (tabContainer) {
             tabContainer.setAttribute('role', 'tablist');
             tabContainer.setAttribute('aria-label', 'Screenshot gallery tabs');
@@ -416,16 +808,8 @@
             });
         });
 
-        // Throttled scroll handler
-        const throttledScrollHandler = throttle(() => {
-            handleNavbarScroll();
-            handleScrollReveal();
-        }, CONFIG.throttleDelay);
-
-        window.addEventListener('scroll', throttledScrollHandler, { passive: true });
-
-        // Keyboard events
-        document.addEventListener('keydown', handleEscapeKey);
+        // Scroll handler
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         // Resize events
         window.addEventListener('resize', handleResize, { passive: true });
@@ -433,8 +817,24 @@
         // Reduced motion change
         window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => {
             generateParticles();
-            handleScrollReveal();
+            if (prefersReducedMotion()) {
+                stopScreenshotAutoplay();
+            }
         });
+
+        // Visibility change - pause autoplay when tab is hidden
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                stopScreenshotAutoplay();
+            }
+        });
+
+        // Screenshot gallery hover - pause autoplay
+        const screenshotGallery = $('.screenshot-gallery');
+        if (screenshotGallery) {
+            screenshotGallery.addEventListener('mouseenter', stopScreenshotAutoplay);
+            screenshotGallery.addEventListener('focusin', stopScreenshotAutoplay);
+        }
     }
 
     // ===== DROPDOWN MENUS =====
@@ -443,7 +843,7 @@
      * Initialize dropdown menu keyboard accessibility
      */
     function initDropdownMenus() {
-        const dropdowns = document.querySelectorAll('.nav-dropdown');
+        const dropdowns = $$('.nav-dropdown');
 
         dropdowns.forEach(dropdown => {
             const trigger = dropdown.querySelector('.nav-dropdown-trigger');
@@ -508,37 +908,70 @@
         });
     }
 
+    // ===== PERFORMANCE MONITORING =====
+
+    /**
+     * Log performance metrics in development
+     */
+    function logPerformance(startTime) {
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+            return;
+        }
+
+        const initTime = (performance.now() - startTime).toFixed(2);
+        const metrics = {
+            initTime: `${initTime}ms`,
+            particleCount: elements.particlesContainer ? elements.particlesContainer.children.length : 0,
+            isMobile: isMobile(),
+            reducedMotion: prefersReducedMotion(),
+            touchDevice: isTouchDevice()
+        };
+
+        console.log('%c⚡ Torn Target Tracker', 'font-weight: bold; font-size: 14px; color: #00f5d4;');
+        console.table(metrics);
+    }
+
     // ===== INITIALIZATION =====
 
     /**
      * Initialize the application
      */
     function init() {
-        // Accessibility first
-        initAccessibility();
+        const startTime = performance.now();
 
-        // Visual elements
-        generateParticles();
-        initImageLoadHandlers();
+        try {
+            // Accessibility first
+            initAccessibility();
 
-        // Interactive features
-        initScreenshotTabs();
-        initSmoothScroll();
-        initDropdownMenus();
-        initEventListeners();
+            // Visual elements
+            generateParticles();
+            initImageLoadHandlers();
+            initLazyLoading();
 
-        // Initial state checks
-        handleNavbarScroll();
-        handleScrollReveal();
+            // Interactive features
+            initScreenshotTabs();
+            initSmoothScroll();
+            initDropdownMenus();
+            initEventListeners();
+            initBackToTop();
+            initSwipeGestures();
+            initKeyboardShortcuts();
 
-        // Preload images after initial render
-        requestAnimationFrame(() => {
-            preloadImages();
-        });
+            // Scroll-based features
+            initScrollReveal();
+            handleNavbarScroll();
+            handleBackToTop();
 
-        // Log initialization (dev only)
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            console.log('Torn Target Tracker Website initialized');
+            // Preload images after initial render
+            requestAnimationFrame(() => {
+                preloadImages();
+            });
+
+            // Performance logging
+            logPerformance(startTime);
+
+        } catch (error) {
+            console.error('Initialization error:', error);
         }
     }
 
