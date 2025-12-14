@@ -4,7 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Torn Target Tracker | Operator Guide</title>
-    <meta name="description" content="Quickstart and operational guide for Torn Target Tracker.">
+    <meta name="description" content="Quickstart and operational guide for Torn Target Tracker. Learn setup, target grouping, chain operations, and advanced workflows.">
+    <meta name="keywords" content="Torn Target Tracker guide, Torn City tutorial, chain operations, target tracking guide">
+    <meta name="author" content="Robin Doak">
+    <meta name="theme-color" content="#0a0a0f">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Torn Target Tracker | Operator Guide">
+    <meta property="og:description" content="Quickstart and operational guide for Torn Target Tracker. Learn setup, target grouping, and chain operations.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194732.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Torn Target Tracker | Operator Guide">
+    <meta name="twitter:description" content="Quickstart and operational guide for Torn Target Tracker.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%2300ff88' stroke-width='3'/><circle cx='50' cy='50' r='8' fill='%2300ff88'/></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -100,7 +118,7 @@
                 <li><a href="index.html#download">Download</a></li>
             </ul>
             <div class="nav-cta">
-                <a href="https://github.com/skillerious/TornTargetTrackerV2" class="btn btn-icon" target="_blank" aria-label="View on GitHub" title="View on GitHub">
+                <a href="https://github.com/skillerious/TornTargetTrackerV2" class="btn btn-icon" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub" title="View on GitHub">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
@@ -201,7 +219,7 @@
                     </a>
                 </li>
                 <li class="mobile-nav-item">
-                    <a href="https://github.com/skillerious/TornTargetTrackerV2/issues" class="mobile-nav-link" target="_blank">
+                    <a href="https://github.com/skillerious/TornTargetTrackerV2/issues" class="mobile-nav-link" target="_blank" rel="noopener noreferrer">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/>
                             <line x1="12" y1="8" x2="12" y2="12"/>
@@ -222,7 +240,7 @@
                     </svg>
                     Download v2.7.9
                 </a>
-                <a href="https://github.com/skillerious/TornTargetTrackerV2" class="mobile-cta-btn secondary" target="_blank">
+                <a href="https://github.com/skillerious/TornTargetTrackerV2" class="mobile-cta-btn secondary" target="_blank" rel="noopener noreferrer">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
@@ -233,7 +251,7 @@
     </div>
 
     <main>
-        <section class="page-hero">
+        <section class="page-hero" id="top">
             <div class="content-width">
                 <p class="eyebrow">Operator guide</p>
                 <h1>Precision setup in minutes</h1>
@@ -250,7 +268,46 @@
             </div>
         </section>
 
-        <section class="page-section">
+        <section class="page-section" id="guide-map">
+            <div class="content-width">
+                <div class="section-header">
+                    <span class="section-tag">Guide map</span>
+                    <h2 class="section-title">Pick your path</h2>
+                    <p class="section-subtitle">Jump straight to the part you need: setup, operating cadence, or recovery steps.</p>
+                </div>
+                <div class="card-grid guide-nav-grid">
+                    <article class="card card-link">
+                        <div class="kicker">Start fast</div>
+                        <h3><a href="#quickstart">Install and secure</a></h3>
+                        <p>Install the latest build, plug in a scoped API key, and set your refresh timer.</p>
+                        <div class="pill-row">
+                            <a class="pill pill-link" href="#quickstart">Checklist</a>
+                            <a class="pill pill-link" href="#reliability">Safety</a>
+                        </div>
+                    </article>
+                    <article class="card card-link">
+                        <div class="kicker">Operate</div>
+                        <h3><a href="#feature-deep-dive">Run chains with focus</a></h3>
+                        <p>Use target groups, Attack Tracker, and quick filters to stay on top of windows.</p>
+                        <div class="pill-row">
+                            <a class="pill pill-link" href="#workflows">Workflows</a>
+                            <a class="pill pill-link" href="#playbook">Playbook</a>
+                        </div>
+                    </article>
+                    <article class="card card-link">
+                        <div class="kicker">Recover</div>
+                        <h3><a href="#support">Backups and help</a></h3>
+                        <p>Export data, verify installs, and share logs when something looks off.</p>
+                        <div class="pill-row">
+                            <a class="pill pill-link" href="#reliability">Troubleshooting</a>
+                            <a class="pill pill-link" href="#support">Contact options</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section" id="quickstart">
             <div class="content-width">
                 <div class="section-header">
                     <span class="section-tag">Setup</span>
@@ -265,6 +322,7 @@
                         <ul class="list-plain">
                             <li>Use a key with minimal scopes: user, faction, and attacks.</li>
                             <li>The key is encrypted with AES-256-GCM before storage.</li>
+                            <li>Verify the installer hash on GitHub before first launch.</li>
                         </ul>
                     </article>
                     <article class="card">
@@ -274,6 +332,7 @@
                         <ul class="list-plain">
                             <li>Color code groups for chains, traveling, or bounty runs.</li>
                             <li>Use quick filters for attackable, hospital, travel, or jail.</li>
+                            <li>Pin your main chain list so it stays visible while you scroll.</li>
                         </ul>
                     </article>
                     <article class="card">
@@ -283,13 +342,62 @@
                         <ul class="list-plain">
                             <li>Use 15s during chains; 45s or higher for idle tracking.</li>
                             <li>Rate limit popover shows remaining calls before a burst.</li>
+                            <li>Pause auto-refresh if Torn's API is under maintenance.</li>
                         </ul>
                     </article>
                 </div>
             </div>
         </section>
 
-        <section class="page-section">
+        <section class="page-section" id="feature-deep-dive">
+            <div class="content-width">
+                <div class="section-header">
+                    <span class="section-tag">Features</span>
+                    <h2 class="section-title">Built for chain discipline</h2>
+                    <p class="section-subtitle">Focus on the tools that keep your target pool clean and your API usage under control.</p>
+                </div>
+                <div class="card-grid feature-grid">
+                    <article class="card">
+                        <h3>Target intelligence</h3>
+                        <p>Keep the right people in view while you rotate through chains.</p>
+                        <ul class="list-plain">
+                            <li>Quick filters spotlight attackable, hospitalized, jailed, or traveling targets.</li>
+                            <li>Group priorities and color coding make it obvious who matters most.</li>
+                            <li>Inline status chips show timers so you do not need to click profiles.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Attack Tracker + bounties</h3>
+                        <p>Log every swing and payout so you never double-tap a target mid-chain.</p>
+                        <ul class="list-plain">
+                            <li>Attack Tracker marks completed hits as you go.</li>
+                            <li>Manual bounty tracking records target IDs and amounts for audits.</li>
+                            <li>Sort recent attacks to see who is safe to re-engage.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Rate-limit guardrails</h3>
+                        <p>Ship fast without burning your key.</p>
+                        <ul class="list-plain">
+                            <li>Popover shows remaining calls and reset timers in real time.</li>
+                            <li>Adaptive refresh slows down when the API starts returning 429s.</li>
+                            <li>Clear status bar messaging when a key is invalid or throttled.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <h3>Backups and workspace</h3>
+                        <p>Move machines or recover quickly with a single file.</p>
+                        <ul class="list-plain">
+                            <li>Backups include target groups, history, filters, and preferences.</li>
+                            <li>Restore in-place without wiping data you still need.</li>
+                            <li>Store backups offline or in a private cloud for safekeeping.</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section" id="workflows">
             <div class="content-width">
                 <div class="section-header">
                     <span class="section-tag">Workflows</span>
@@ -328,7 +436,46 @@
             </div>
         </section>
 
-        <section class="page-section">
+        <section class="page-section" id="playbook">
+            <div class="content-width">
+                <div class="section-header">
+                    <span class="section-tag">Playbook</span>
+                    <h2 class="section-title">Chain routine you can reuse</h2>
+                    <p class="section-subtitle">A short loop to prep, run, and close out chains without burning calls or losing track of payouts.</p>
+                </div>
+                <div class="card-grid">
+                    <article class="card">
+                        <div class="kicker">Before the chain</div>
+                        <h3>Health check and prep</h3>
+                        <ul class="list-plain">
+                            <li>Verify the installer hash and take a quick backup of targets.</li>
+                            <li>Confirm the Torn API status and set refresh to a safe cadence.</li>
+                            <li>Stage attackable and bounty groups with pinned filters.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <div class="kicker">During the chain</div>
+                        <h3>Stay on the right targets</h3>
+                        <ul class="list-plain">
+                            <li>Keep Attack Tracker open so completed hits are instantly marked.</li>
+                            <li>Sort by travel or hospital timer to decide who rotates in next.</li>
+                            <li>Use manual bounty tracking to log payouts while you move.</li>
+                        </ul>
+                    </article>
+                    <article class="card">
+                        <div class="kicker">After the chain</div>
+                        <h3>Reset and recover</h3>
+                        <ul class="list-plain">
+                            <li>Switch to a slower refresh interval to protect your API budget.</li>
+                            <li>Restore a backup if you reset filters or switch machines.</li>
+                            <li>File issues with logs attached for any odd behavior.</li>
+                        </ul>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="page-section" id="reliability">
             <div class="content-width">
                 <div class="section-header">
                     <span class="section-tag">Reliability</span>
@@ -342,6 +489,7 @@
                             <li>AES-256-GCM encryption and sandboxed renderer keep your key guarded.</li>
                             <li>Run the app from a local drive; avoid shared or synced temp folders.</li>
                             <li>Use the built-in rate limiter. Manual API bursts can lead to 429 errors.</li>
+                            <li>Match the installer hash and keep backups off the machine you raid on.</li>
                         </ul>
                     </div>
                     <div class="card">
@@ -350,13 +498,22 @@
                             <li>Check the status bar for rate limit warnings or API errors.</li>
                             <li>Refresh tokens by re-entering the API key if status reads invalid.</li>
                             <li>Open a GitHub issue with logs attached for repeatable bugs.</li>
+                            <li>Restart with auto-refresh paused if you see multiple 429s in a row.</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <div class="kicker">Self-check</div>
+                        <ul class="list-plain">
+                            <li>Confirm time sync on Windows so timers and cooldowns stay accurate.</li>
+                            <li>Use the Attack Tracker history to verify whether a target already fell.</li>
+                            <li>Restore your latest backup and re-run install if UI panels look empty.</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="page-section">
+        <section class="page-section" id="support">
             <div class="content-width">
                 <div class="section-header">
                     <span class="section-tag">Support</span>
@@ -367,7 +524,7 @@
                     <article class="card">
                         <h3>File a ticket</h3>
                         <p>Open an issue on GitHub with screenshots and logs.</p>
-                        <a class="btn btn-ghost" href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank" rel="noopener">Report an issue</a>
+                        <a class="btn btn-ghost" href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank" rel="noopener noreferrer">Report an issue</a>
                     </article>
                     <article class="card">
                         <h3>Verify your install</h3>
@@ -377,18 +534,81 @@
                         <h3>Reset in place</h3>
                         <p>Re-enter the API key and restart the app to clear stale sessions. Restore from backup if you reset data.</p>
                     </article>
+                    <article class="card">
+                        <h3>Stay current</h3>
+                        <p>Scan release notes before a chain so you know what changed, what is fixed, and what to avoid.</p>
+                        <a class="btn btn-ghost" href="release-notes.html">Read release notes</a>
+                    </article>
+                </div>
+                <div class="callout info">
+                    <div class="callout-title">Faster responses</div>
+                    <ul class="list-plain">
+                        <li>Include app version, Windows build, and whether you used backups.</li>
+                        <li>Attach redacted logs that show the exact error or API response.</li>
+                        <li>Describe the workflow (chain prep, bounties, backups) you were running.</li>
+                    </ul>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer class="footer-simple">
-        <div class="content-width">
-            <span>Built for Torn City operators. Stay sharp and respect Torn's API rules.</span>
-            <div class="footer-links">
-                <a href="index.html">Back to landing</a>
-                <a href="release-notes.html">Release notes</a>
-                <a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank" rel="noopener">GitHub</a>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <div class="footer-logo-icon">
+                            <svg viewBox="0 0 100 100" class="logo-svg">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#00ff88" stroke-width="3" opacity="0.3"/>
+                                <circle cx="50" cy="50" r="35" fill="none" stroke="#00ff88" stroke-width="2" opacity="0.5"/>
+                                <circle cx="50" cy="50" r="25" fill="none" stroke="#00ff88" stroke-width="2"/>
+                                <circle cx="50" cy="50" r="8" fill="#00ff88"/>
+                            </svg>
+                        </div>
+                        <span class="footer-logo-text">Torn Target Tracker</span>
+                    </div>
+                    <p class="footer-desc">Intelligence overlay for Torn City operations. Open source, community-driven, and built for operators.</p>
+                    <div class="footer-social">
+                        <a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="footer-social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h5>Product</h5>
+                        <ul>
+                            <li><a href="index.html#features">Features</a></li>
+                            <li><a href="index.html#screenshots">Screenshots</a></li>
+                            <li><a href="index.html#whats-new">Changelog</a></li>
+                            <li><a href="guide.html">Operator Guide</a></li>
+                            <li><a href="release-notes.html">Release Notes</a></li>
+                            <li><a href="index.html#download">Download</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h5>Resources</h5>
+                        <ul>
+                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank" rel="noopener noreferrer">Report Issues</a></li>
+                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2#readme" target="_blank" rel="noopener noreferrer">Documentation</a></li>
+                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h5>Torn City</h5>
+                        <ul>
+                            <li><a href="https://www.torn.com" target="_blank" rel="noopener noreferrer">Play Torn</a></li>
+                            <li><a href="https://www.torn.com/preferences.php#tab=api" target="_blank" rel="noopener noreferrer">API Keys</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">Made with <span class="footer-heart" aria-hidden="true">&#10084;</span> by <a href="https://github.com/skillerious" target="_blank" rel="noopener noreferrer">Robin Doak</a></p>
+                <p class="footer-disclaimer">Not affiliated with <a href="https://www.torn.com" target="_blank" rel="noopener noreferrer">Torn.com</a>. Use responsibly and respect API limits.</p>
             </div>
         </div>
     </footer>

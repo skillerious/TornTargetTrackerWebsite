@@ -5,6 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Torn Target Tracker - Intelligence Overlay for Torn City Operations</title>
     <meta name="description" content="The ultimate Electron desktop app for Torn.com chain targets. Live status, smart rate limiting, encrypted API key storage, and keyboard-first workflow.">
+    <meta name="keywords" content="Torn City, Torn Target Tracker, chain targets, Torn API, desktop app, Electron, target tracking">
+    <meta name="author" content="Robin Doak">
+    <meta name="theme-color" content="#0a0a0f">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Torn Target Tracker - Intelligence Overlay for Torn City">
+    <meta property="og:description" content="The ultimate Electron desktop app for Torn.com chain targets. Live status tracking, smart rate limiting, and encrypted security.">
+    <meta property="og:image" content="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194732.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Torn Target Tracker - Intelligence Overlay for Torn City">
+    <meta name="twitter:description" content="The ultimate Electron desktop app for Torn.com chain targets. Live status tracking, smart rate limiting, and encrypted security.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194732.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='none' stroke='%2300ff88' stroke-width='3'/><circle cx='50' cy='50' r='8' fill='%2300ff88'/></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -50,6 +70,18 @@
             overflow-x: hidden;
             position: relative;
             width: 100%;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Allow text selection in specific areas if needed */
+        code, pre, .selectable {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
         }
 
         /* Animated Background Grid */
@@ -1481,22 +1513,48 @@
 
         .footer-bottom {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+            text-align: center;
             padding-top: 2rem;
             border-top: 1px solid var(--border-subtle);
-            flex-wrap: wrap;
-            gap: 1rem;
+            gap: 0.5rem;
         }
 
         .footer-copyright {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .footer-copyright a {
+            color: var(--accent-cyan);
+            text-decoration: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .footer-copyright a:hover {
+            opacity: 0.8;
+        }
+
+        .footer-disclaimer {
             color: var(--text-muted);
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+        }
+
+        .footer-disclaimer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer-disclaimer a:hover {
+            color: var(--accent-cyan);
         }
 
         .footer-social {
             display: flex;
             gap: 1rem;
+            margin-top: 1rem;
         }
 
         .footer-social a {
@@ -2674,9 +2732,42 @@
                 animation: none;
             }
         }
+
+        /* Back to Top Focus States */
+        .back-to-top:focus {
+            outline: none;
+        }
+
+        .back-to-top:focus-visible {
+            outline: 2px solid var(--accent-cyan);
+            outline-offset: 2px;
+        }
+
+        /* Skip Link for Accessibility */
+        .skip-link {
+            position: absolute;
+            top: -100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-cyan);
+            color: var(--bg-primary);
+            padding: 12px 24px;
+            border-radius: 0 0 8px 8px;
+            font-weight: 600;
+            text-decoration: none;
+            z-index: 10000;
+            transition: top 0.3s ease;
+        }
+
+        .skip-link:focus {
+            top: 0;
+        }
     </style>
 </head>
 <body>
+    <!-- Skip to Content Link for Accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- Background Elements -->
     <div class="bg-grid"></div>
     <div class="bg-gradient"></div>
@@ -2767,7 +2858,7 @@
                 <li><a href="#download">Download</a></li>
             </ul>
             <div class="nav-cta">
-                <a href="https://github.com/skillerious/TornTargetTrackerV2" class="btn btn-icon" target="_blank" aria-label="View on GitHub" title="View on GitHub">
+                <a href="https://github.com/skillerious/TornTargetTrackerV2" class="btn btn-icon" target="_blank" rel="noopener noreferrer" aria-label="View on GitHub" title="View on GitHub">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                     </svg>
@@ -2880,7 +2971,7 @@
                 </li>
                 <div class="mobile-menu-divider"></div>
                 <li class="mobile-nav-item">
-                    <a href="https://github.com/skillerious/TornTargetTrackerV2" class="mobile-nav-link" target="_blank">
+                    <a href="https://github.com/skillerious/TornTargetTrackerV2" class="mobile-nav-link" target="_blank" rel="noopener noreferrer">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                         </svg>
@@ -2888,7 +2979,7 @@
                     </a>
                 </li>
                 <li class="mobile-nav-item">
-                    <a href="https://github.com/skillerious/TornTargetTrackerV2/issues" class="mobile-nav-link" target="_blank">
+                    <a href="https://github.com/skillerious/TornTargetTrackerV2/issues" class="mobile-nav-link" target="_blank" rel="noopener noreferrer">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="10"/>
                             <line x1="12" y1="8" x2="12" y2="12"/>
@@ -2909,7 +3000,7 @@
                     </svg>
                     Download v2.7.9
                 </a>
-                <a href="https://github.com/skillerious/TornTargetTrackerV2/releases/tag/v2.7.9" class="mobile-cta-btn secondary" target="_blank">
+                <a href="https://github.com/skillerious/TornTargetTrackerV2/releases/tag/v2.7.9" class="mobile-cta-btn secondary" target="_blank" rel="noopener noreferrer">
                     View All Releases
                 </a>
             </div>
@@ -2918,7 +3009,7 @@
     </div>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="main-content">
         <div class="hero-content">
             <div class="hero-text">
                 <div class="hero-badge">
@@ -2934,12 +3025,19 @@
                 </p>
                 <div class="hero-stats">
                     <div class="hero-stat">
-                        <span class="hero-stat-value">3</span>
-                        <span class="hero-stat-label">Platforms</span>
+                        <span class="hero-stat-value">
+                            <svg width="26" height="26" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M1,15H12a1,1,0,0,0,1-1V4.17a1,1,0,0,0-.35-.77,1,1,0,0,0-.81-.22L.84,5A1,1,0,0,0,0,6v8A1,1,0,0,0,1,15ZM2,6.85l9-1.5V13H2Z"/>
+                                <path d="M30.84,0l-15,2.5a1,1,0,0,0-.84,1V14a1,1,0,0,0,1,1H31a1,1,0,0,0,1-1V1a1,1,0,0,0-.35-.76A1,1,0,0,0,30.84,0ZM30,13H17V4.35L30,2.18Z"/>
+                                <path d="M.84,27l11,1.83H12a1,1,0,0,0,1-1V18a1,1,0,0,0-1-1H1a1,1,0,0,0-1,1v8A1,1,0,0,0,.84,27ZM2,19h9v7.65l-9-1.5Z"/>
+                                <path d="M31,17H16a1,1,0,0,0-1,1V28.5a1,1,0,0,0,.84,1l15,2.5H31a1,1,0,0,0,.65-.24A1,1,0,0,0,32,31V18A1,1,0,0,0,31,17ZM30,29.82,17,27.65V19H30Z"/>
+                            </svg>
+                        </span>
+                        <span class="hero-stat-label">Platform</span>
                     </div>
                     <div class="hero-stat">
-                        <span class="hero-stat-value">100%</span>
-                        <span class="hero-stat-label">Open Source</span>
+                        <span class="hero-stat-value">MIT</span>
+                        <span class="hero-stat-label">License</span>
                     </div>
                     <div class="hero-stat">
                         <span class="hero-stat-value">v2.7.9</span>
@@ -2955,7 +3053,7 @@
                         </svg>
                         Download v2.7.9
                     </a>
-                    <a href="https://github.com/skillerious/TornTargetTrackerV2" class="btn btn-secondary" target="_blank">
+                    <a href="https://github.com/skillerious/TornTargetTrackerV2" class="btn btn-secondary" target="_blank" rel="noopener noreferrer">
                         View on GitHub
                     </a>
                 </div>
@@ -3103,12 +3201,12 @@
             <div class="screenshot-display reveal">
                 <div class="screenshot-frame">
                     <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194732.png" alt="Command Center" class="active" data-screenshot="home">
-                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194758.png" alt="Statistics Dashboard" data-screenshot="stats">
-                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194747.png" alt="Attack History" data-screenshot="history">
-                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194808.png" alt="NPC Loot Timers" data-screenshot="npc">
-                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194819.png" alt="Bounty Tracker" data-screenshot="bounty">
-                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194930.png" alt="Rate Limit Popover" data-screenshot="ratelimit">
-                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194954.png" alt="Backup & Restore" data-screenshot="backup">
+                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194758.png" alt="Statistics Dashboard" data-screenshot="stats" loading="lazy">
+                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194747.png" alt="Attack History" data-screenshot="history" loading="lazy">
+                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194808.png" alt="NPC Loot Timers" data-screenshot="npc" loading="lazy">
+                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194819.png" alt="Bounty Tracker" data-screenshot="bounty" loading="lazy">
+                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194930.png" alt="Rate Limit Popover" data-screenshot="ratelimit" loading="lazy">
+                    <img src="https://raw.githubusercontent.com/Skillerious87/SwiftImageHost/main/images/TTTV3/Screenshot-2025-12-13-194954.png" alt="Backup & Restore" data-screenshot="backup" loading="lazy">
                 </div>
                 <p class="screenshot-caption" id="screenshot-caption">Target Command Center - Your central hub for all operations</p>
             </div>
@@ -3375,7 +3473,7 @@
                     <span>Support</span>
                     <span>Bug reports</span>
                 </div>
-                <a class="resource-link" href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank" rel="noopener">
+                <a class="resource-link" href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank" rel="noopener noreferrer">
                     Open issues
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M4 12h16"/>
@@ -3402,7 +3500,7 @@
                             </svg>
                             Download for Windows
                         </a>
-                        <a href="https://github.com/skillerious/TornTargetTrackerV2/releases/tag/v2.7.9" class="download-btn download-btn-secondary" target="_blank">
+                        <a href="https://github.com/skillerious/TornTargetTrackerV2/releases/tag/v2.7.9" class="download-btn download-btn-secondary" target="_blank" rel="noopener noreferrer">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
                             </svg>
@@ -3452,6 +3550,13 @@
                         <span class="footer-logo-text">Torn Target Tracker</span>
                     </div>
                     <p class="footer-desc">Intelligence overlay for Torn City operations. Open source, community-driven, and built for operators.</p>
+                    <div class="footer-social">
+                        <a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank" rel="noopener noreferrer" aria-label="GitHub" class="footer-social-link">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                        </a>
+                    </div>
                 </div>
                 <div class="footer-links">
                     <div class="footer-column">
@@ -3468,30 +3573,24 @@
                     <div class="footer-column">
                         <h5>Resources</h5>
                         <ul>
-                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank">GitHub</a></li>
-                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank">Report Issues</a></li>
-                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2#readme" target="_blank">Documentation</a></li>
-                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2/blob/main/LICENSE" target="_blank">License</a></li>
+                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2/issues" target="_blank" rel="noopener noreferrer">Report Issues</a></li>
+                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2#readme" target="_blank" rel="noopener noreferrer">Documentation</a></li>
+                            <li><a href="https://github.com/skillerious/TornTargetTrackerV2/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">License</a></li>
                         </ul>
                     </div>
                     <div class="footer-column">
                         <h5>Torn City</h5>
                         <ul>
-                            <li><a href="https://www.torn.com" target="_blank">Play Torn</a></li>
-                            <li><a href="https://www.torn.com/preferences.php#tab=api" target="_blank">API Keys</a></li>
+                            <li><a href="https://www.torn.com" target="_blank" rel="noopener noreferrer">Play Torn</a></li>
+                            <li><a href="https://www.torn.com/preferences.php#tab=api" target="_blank" rel="noopener noreferrer">API Keys</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="footer-copyright">© 2025 Robin Doak. Torn Target Tracker is not affiliated with Torn.com. Use responsibly.</p>
-                <div class="footer-social">
-                    <a href="https://github.com/skillerious/TornTargetTrackerV2" target="_blank" aria-label="GitHub">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                        </svg>
-                    </a>
-                </div>
+                <p class="footer-copyright">Made with ❤️ by <a href="https://github.com/skillerious" target="_blank" rel="noopener noreferrer">Robin Doak</a></p>
+                <p class="footer-disclaimer">Not affiliated with <a href="https://www.torn.com" target="_blank" rel="noopener noreferrer">Torn.com</a>. Use responsibly and respect API limits.</p>
             </div>
         </div>
     </footer>

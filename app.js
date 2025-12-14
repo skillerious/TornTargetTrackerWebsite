@@ -908,6 +908,152 @@
         });
     }
 
+    // ===== ACTIVE SECTION HIGHLIGHTING =====
+
+    /**
+     * Track which section is currently in view and highlight nav
+     */
+    function initActiveSectionTracking() {
+        const sections = $$('section[id]');
+        const navLinks = $$('.nav-links a[href^="#"], .nav-dropdown-menu a[href^="#"]');
+
+        if (!sections.length || !navLinks.length) return;
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                    });
+                }
+            });
+        }, {
+            threshold: 0.3,
+            rootMargin: '-80px 0px -50% 0px'
+        });
+
+        sections.forEach(section => observer.observe(section));
+    }
+
+    // ===== PARALLAX EFFECTS =====
+
+    /**
+     * Add subtle parallax effect to hero section
+     */
+    function initParallax() {
+        const heroVisual = $('.hero-visual');
+        const heroGlow = $('.hero-glow');
+
+        if (!heroVisual || prefersReducedMotion()) return;
+
+        let ticking = false;
+
+        window.addEventListener('scroll', () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    const maxScroll = window.innerHeight;
+
+                    if (scrollY < maxScroll) {
+                        const parallaxAmount = scrollY * 0.3;
+                        heroVisual.style.transform = `translateY(${parallaxAmount}px)`;
+
+                        if (heroGlow) {
+                            heroGlow.style.opacity = 1 - (scrollY / maxScroll);
+                        }
+                    }
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        }, { passive: true });
+    }
+
+    // ===== ANIMATED COUNTERS =====
+
+    /**
+     * Animate counting numbers when they come into view
+     */
+    function initAnimatedCounters() {
+        const counters = $$('[data-count]');
+
+        if (!counters.length) return;
+
+        const animateCounter = (element) => {
+            const target = parseInt(element.dataset.count, 10);
+            const duration = 2000;
+            const start = performance.now();
+
+            const updateCount = (currentTime) => {
+                const elapsed = currentTime - start;
+                const progress = Math.min(elapsed / duration, 1);
+
+                // Easing function for smooth animation
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const current = Math.floor(easeOutQuart * target);
+
+                element.textContent = current.toLocaleString();
+
+                if (progress < 1) {
+                    requestAnimationFrame(updateCount);
+                } else {
+                    element.textContent = target.toLocaleString();
+                }
+            };
+
+            requestAnimationFrame(updateCount);
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        counters.forEach(counter => observer.observe(counter));
+    }
+
+    // ===== CONTEXT MENU & DRAG PREVENTION =====
+
+    /**
+     * Prevent right-click context menu on images
+     */
+    function initContextMenuPrevention() {
+        document.addEventListener('contextmenu', (e) => {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        // Prevent image dragging
+        document.addEventListener('dragstart', (e) => {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+    }
+
+    // ===== COPY PROTECTION =====
+
+    /**
+     * Add copy event listener for attribution
+     */
+    function initCopyProtection() {
+        document.addEventListener('copy', (e) => {
+            const selection = window.getSelection().toString();
+            if (selection.length > 100) {
+                e.clipboardData.setData('text/plain',
+                    selection + '\n\n— Copied from Torn Target Tracker (https://torntargettracker.com)'
+                );
+                e.preventDefault();
+            }
+        });
+    }
+
     // ===== PERFORMANCE MONITORING =====
 
     /**
@@ -959,8 +1105,15 @@
 
             // Scroll-based features
             initScrollReveal();
+            initActiveSectionTracking();
+            initParallax();
             handleNavbarScroll();
             handleBackToTop();
+
+            // Enhanced features
+            initAnimatedCounters();
+            initContextMenuPrevention();
+            initCopyProtection();
 
             // Preload images after initial render
             requestAnimationFrame(() => {
